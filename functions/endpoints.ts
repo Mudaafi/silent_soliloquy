@@ -1,4 +1,7 @@
+import { sendMessage } from './lib/telegram-inteface'
+
 const TELE_BOT_KEY = process.env.TELE_BOT_KEY || ''
+const ADMIN_ID = process.env.ADMIN_ID || ''
 
 export async function handler(event: any, context: any) {
   var res = 'Received request'
@@ -18,6 +21,7 @@ export async function handler(event: any, context: any) {
 async function processGetReq(params: GetEndpointParams): Promise<string> {
   switch (params.function) {
     case 'test':
+      await sendMessage(TELE_BOT_KEY, ADMIN_ID, params.data)
       return 'success'
     default:
       return 'Get Request Defaulted'
