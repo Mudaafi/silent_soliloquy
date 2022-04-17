@@ -11,6 +11,12 @@ export async function processTeleMsg(message: TeleMessage) {
     return processPhoto(message)
   } else if (message.text) {
     if (!message.from) return
+    if (message.from.id.toString() != MUDAAFI_ID)
+      return sendMessage(
+        TELE_BOT_KEY,
+        message.from.id,
+        'Sorry but I am not authorized to converse with you.',
+      )
     if (message.text == '/identify')
       return sendMessage(
         TELE_BOT_KEY,
