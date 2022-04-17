@@ -1,0 +1,48 @@
+{
+  "name": "silent_soliloquy",
+  "version": "1.0.0",
+  "description": "My Conscience",
+  "main": "index.js",
+  "scripts": {
+    "serve": "netlify-lambda serve --config ./webpack.functions.js functions",
+    "build": "netlify-lambda build functions"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "encoding": "^0.1.13",
+    "googleapis": "^73.0.0",
+    "netlify-lambda": "^2.0.5"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.14.0",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/node": "^15.0.1",
+    "@types/webpack-env": "^1.16.2",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "dotenv-webpack": "^7.0.2",
+    "eslint": "^7.25.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.4",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mudaafi/silent_soliloquy.git"
+  },
+  "keywords": [
+    "netlify",
+    "telegram",
+    "Google",
+    "Sheets",
+    "Google",
+    "Forms"
+  ],
+  "author": "Ahmad Mudaafi' <SleepyUndergrad@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mudaafi/silent_soliloquy/issues"
+  },
+  "homepage": "https://github.com/Mudaafi/silent_soliloquy#readme"
+}
