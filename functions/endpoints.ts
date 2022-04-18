@@ -29,6 +29,15 @@ async function processGetReq(params: GetEndpointParams): Promise<string> {
 }
 
 async function processPostReq(body: PostEndpointBody): Promise<string> {
+  if (!body.function) {
+    await sendMessage(
+      TELE_BOT_KEY,
+      ADMIN_ID,
+      `Post Request Defaulted\n\n<b>Body:</b>\n${JSON.stringify(body)}`,
+    )
+    return 'External Post Request Detected'
+  }
+
   switch (body.function) {
     case 'test':
       return 'success'
