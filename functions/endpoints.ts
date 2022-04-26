@@ -7,7 +7,13 @@ const ADMIN_ID = process.env.ADMIN_ID || ''
 export async function handler(event: HandlerEvent, context: HandlerContext) {
   var res = 'Received request'
   if (event.httpMethod == 'POST') {
-    const body = JSON.parse(event.body || `{'function': 'Missing Body'}`)
+    let body = null
+    let bodyContentType = event.headers['content-type']
+    if (event.body == null) body = { function: 'Error' }
+    else if (bodyContentType == 'application/json')
+      body = JSON.parse(event.body)
+    else if (bodyContentType == 'application/x-www-form-urlencoded')
+      body = paramsToObject(new URLSearchParams(event.body))
     res = await processPostReq(body as PostEndpointBody)
   } else if (event.httpMethod == 'GET') {
     const params = event.queryStringParameters as unknown
@@ -55,4 +61,10 @@ interface PostEndpointBody {
 interface GetEndpointParams {
   function: string
   data: string
+}
+
+function paramsToObject(params: URLSearchParams) {
+  let jsonObj: { [key: string]: any } = {}
+  Array.from(params.keys()).forEach((key) => (jsonObj[key] = params.get(key)))
+  return jsonObj
 }
