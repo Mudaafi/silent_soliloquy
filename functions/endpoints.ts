@@ -1,15 +1,16 @@
+import { HandlerEvent, HandlerContext } from '@netlify/functions'
 import { sendMessage } from './lib/telegram-inteface'
 
 const TELE_BOT_KEY = process.env.TELE_BOT_KEY || ''
 const ADMIN_ID = process.env.ADMIN_ID || ''
 
-export async function handler(event: any, context: any) {
+export async function handler(event: HandlerEvent, context: HandlerContext) {
   var res = 'Received request'
   if (event.httpMethod == 'POST') {
-    const body = JSON.parse(event.body)
+    const body = JSON.parse(event.body || `{'function': 'Missing Body'}`)
     res = await processPostReq(body as PostEndpointBody)
   } else if (event.httpMethod == 'GET') {
-    const params = event.queryStringParameters
+    const params = event.queryStringParameters as unknown
     res = await processGetReq(params as GetEndpointParams)
   }
   return {
