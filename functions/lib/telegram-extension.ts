@@ -7,11 +7,11 @@ const MUDAAFI_ID = process.env.ADMIN_ID || ''
 // Assume B:id, C:name, D:username, E:join_date, F:isDeparted
 
 export async function processTeleMsg(message: TeleMessage) {
-  await sendMessage(TELE_BOT_KEY, message.from?.id, message)
   if (message.photo) {
     return processPhoto(message)
   } else if (message.text) {
     if (!message.from) return
+    await sendMessage(TELE_BOT_KEY, message.from.id, JSON.stringify(message))
     if (message.from.id.toString() != MUDAAFI_ID)
       return sendMessage(
         TELE_BOT_KEY,
