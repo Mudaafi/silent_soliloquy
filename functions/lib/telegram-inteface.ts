@@ -1,7 +1,6 @@
 import axios from 'axios'
-import {
+import type {
   TeleResponse,
-  convertError,
   TeleInlineKeyboardButton,
   TeleInlineKeyboard,
   TeleMessageEntities,
@@ -9,6 +8,7 @@ import {
   TeleBotCommand,
   TeleBotCommandScope,
 } from './tele-types'
+import { convertError } from './tele-types'
 
 const TELE_API = 'https://api.telegram.org/bot'
 

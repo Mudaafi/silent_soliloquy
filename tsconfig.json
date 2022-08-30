@@ -1,4 +1,5 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.web.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -18,6 +19,17 @@
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
-  "include": ["functions/**/*.ts", "functions/*.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
+  ],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "functions/**/*.ts",
+    "functions/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

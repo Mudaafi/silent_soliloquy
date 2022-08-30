@@ -1,5 +1,5 @@
 import { sendMessage } from './telegram-inteface'
-import { TeleCallbackQuery, TeleMessage, TeleUpdate } from './tele-types'
+import type { TeleCallbackQuery, TeleMessage, TeleUpdate } from './tele-types'
 
 const TELE_BOT_KEY = process.env.TELE_BOT_KEY || ''
 const MUDAAFI_ID = process.env.ADMIN_ID || ''

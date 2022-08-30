@@ -1,4 +1,4 @@
-import { TeleUpdate } from './lib/tele-types'
+import type { TeleUpdate } from './lib/tele-types'
 import {
   processTeleCallback,
   processTeleError,

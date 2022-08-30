@@ -1,8 +1,5 @@
-import {
-  TeleBotCommand,
-  TeleBotCommandScope,
-  TeleBotCommandScopeType,
-} from './lib/tele-types'
+import type { TeleBotCommand, TeleBotCommandScope } from './lib/tele-types'
+import { TeleBotCommandScopeType } from './lib/tele-types'
 import { sendPhoto, setMyCommands } from './lib/telegram-inteface'
 
 const TELE_BOT_KEY = process.env.TELE_BOT_KEY || ''

@@ -1,4 +1,4 @@
-import { HandlerEvent, HandlerContext } from '@netlify/functions'
+import type { HandlerEvent, HandlerContext } from '@netlify/functions'
 import { sendMessage } from './lib/telegram-inteface'
 
 const TELE_BOT_KEY = process.env.TELE_BOT_KEY || ''
