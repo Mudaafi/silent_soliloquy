@@ -16,16 +16,21 @@
     "@netlify/functions": "^1.0.0",
     "axios": "^0.21.1",
     "encoding": "^0.1.13",
+    "firebase": "^9.9.3",
+    "firebase-admin": "^11.0.1",
     "googleapis": "^73.0.0",
     "netlify-lambda": "^2.0.5",
     "pinia": "^2.0.17",
+    "pinia-plugin-persistedstate": "^2.1.1",
     "uuid": "^8.3.2",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.5"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.14.0",
     "@babel/preset-typescript": "^7.13.0",
     "@types/node": "^16.11.47",
+    "@types/uuid": "^8.3.4",
     "@types/webpack-env": "^1.16.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
