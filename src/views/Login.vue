@@ -10,8 +10,10 @@ function uponVerificationCallback() {
   if (authStore.isAuth == true) router.push({ name: 'dashboard' })
 }
 
-function resetAuth() {
-  authStore.$reset
+async function resetAuth() {
+  authStore.$reset()
+  await authStore.createSeshId()
+  await authStore.awaitVerification(uponVerificationCallback)
 }
 
 onMounted(async () => {
