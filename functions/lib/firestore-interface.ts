@@ -2,6 +2,7 @@ import admin from 'firebase-admin'
 import type { ServiceAccount } from 'firebase-admin'
 import type { Session } from '../../firestore-types'
 import { uuidv4 } from '@firebase/util'
+import type { DocumentData } from '@firebase/firestore'
 
 const serviceAccount: ServiceAccount = {
   projectId: 'silent-soliloquy',
@@ -32,7 +33,7 @@ const converter = <T>() => ({
 })
 
 // Creates a function that obtains the corresponding DB while generically setting types via the converter
-const dataPoint = <T>(collectionPath: string) =>
+const dataPoint = <T extends DocumentData>(collectionPath: string) =>
   admin.firestore().collection(collectionPath).withConverter(converter<T>())
 
 // Declare the types of Databases available

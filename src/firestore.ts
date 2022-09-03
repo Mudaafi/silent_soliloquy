@@ -3,6 +3,7 @@ import {
   collection,
   getFirestore,
   QueryDocumentSnapshot,
+  type DocumentData,
 } from 'firebase/firestore'
 import type { Session } from 'firestore-types'
 
@@ -23,7 +24,7 @@ const converter = <T>() => ({
 })
 
 // Creates a function that obtains the corresponding DB while generically setting types via the converter
-const dataPoint = <T>(collectionPath: string) =>
+const dataPoint = <T extends DocumentData>(collectionPath: string) =>
   collection(firestore, collectionPath).withConverter(converter<T>())
 
 // Declare the types of Databases available
