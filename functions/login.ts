@@ -61,6 +61,11 @@ async function processGetReq(queryStrParams: EventQueryStringParameters) {
       await db.sessions.doc(seshId!).create(newSesh)
       return 'Session Successfully Created'
 
+    case 'mark-access':
+      var seshId = queryStrParams['seshId']
+      await db.sessions.doc(seshId!).update({ accessed: true })
+      return
+
     case 'login-check':
       var seshId = queryStrParams['seshId']
       var doc = await db.sessions.doc(seshId!).get()

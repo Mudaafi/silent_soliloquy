@@ -18,12 +18,6 @@ export async function processTeleMsg(message: TeleMessage) {
   } else if (message.text) {
     if (!message.from) return
     await sendMessage(TELE_BOT_KEY, message.from.id, JSON.stringify(message))
-    if (message.from.id.toString() != MUDAAFI_ID)
-      return sendMessage(
-        TELE_BOT_KEY,
-        message.from.id,
-        'Sorry but I am not authorized to converse with you.',
-      )
     if (message.text == '/start') {
       var seshId = message.text.split(' ')[1]
       await db.sessions.doc(seshId).update({
@@ -38,6 +32,12 @@ export async function processTeleMsg(message: TeleMessage) {
       )
       return sendMessage(TELE_BOT_KEY, message.from.id, msg)
     }
+    if (message.from.id.toString() != MUDAAFI_ID)
+      return sendMessage(
+        TELE_BOT_KEY,
+        message.from.id,
+        'Sorry but I am not authorized to converse with you.',
+      )
     if (message.text == '/identify')
       return sendMessage(
         TELE_BOT_KEY,

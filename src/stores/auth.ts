@@ -33,6 +33,9 @@ export const useAuthStore = defineStore({
         )
       }
     },
+    async markAccessed() {
+      await axios.get(`${BACKEND_URL}?fn=mark-access&seshId=${this.seshId}`)
+    },
     async awaitVerification(
       callback: (doc: DocumentSnapshot<Session>) => void,
     ) {

@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
 import { onMounted } from 'vue'
+const store = useAuthStore()
 const props = defineProps(['seshId'])
-onMounted(() => {
+onMounted(async () => {
+  await store.markAccessed()
   setTimeout(() => {
     window.location.href = `https://t.me/silent_soliloquy_bot?start=${props.seshId}`
   }, 2000)
