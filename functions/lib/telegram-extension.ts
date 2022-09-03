@@ -1,4 +1,9 @@
-import { cleanseString, convertToHTML, sendMessage } from './telegram-inteface'
+import {
+  cleanseString,
+  convertToHTML,
+  genInlineButtons,
+  sendMessage,
+} from './telegram-inteface'
 import type {
   TeleCallbackQuery,
   TeleMessage,
@@ -30,13 +35,11 @@ export async function processTeleMsg(message: TeleMessage) {
         accessed: true,
       })
       var sesh = (await db.sessions.doc(seshId).get()).data()
-      var msg = embedMetadata(
-        sesh!.seshId,
-        `Before you login, please confirm if the code on your screen is the same as <b>${
-          sesh!.verificationKey
-        }</b>`,
-      )
-      return sendMessage(TELE_BOT_KEY, message.from.id, msg)
+      var msg = `Before you login, please confirm if the code on your screen is the same as <b>${
+        sesh!.verificationKey
+      }</b>`
+      var btns = genInlineButtons([['Log Me In!']], [seshId])
+      return sendMessage(TELE_BOT_KEY, message.from.id, msg, btns)
     }
     if (message.text == '/identify')
       return sendMessage(
@@ -48,12 +51,7 @@ export async function processTeleMsg(message: TeleMessage) {
 }
 
 export async function processTeleCallback(callback: TeleCallbackQuery) {
-  if (!callback.message || !callback.message.text) return
-
-  if (callback.message.entities) {
-    const seshId = extractMetadata(
-      formatTeleTextToHtml(callback.message.text, callback.message.entities),
-    )
+  const seshId = callback.data
     if (!seshId) return
     await db.sessions.doc(seshId).update({ verified: true })
     return sendMessage(TELE_BOT_KEY, callback.from.id, 'Logged in!')
