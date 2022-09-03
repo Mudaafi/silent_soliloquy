@@ -52,10 +52,9 @@ export async function processTeleMsg(message: TeleMessage) {
 
 export async function processTeleCallback(callback: TeleCallbackQuery) {
   const seshId = callback.data
-    if (!seshId) return
-    await db.sessions.doc(seshId).update({ verified: true })
-    return sendMessage(TELE_BOT_KEY, callback.from.id, 'Logged in!')
-  }
+  if (!seshId) return
+  await db.sessions.doc(seshId).update({ verified: true })
+  return sendMessage(TELE_BOT_KEY, callback.from.id, 'Logged in!')
 }
 
 export async function processTeleError(prompt: TeleUpdate, errorMsg: Error) {
