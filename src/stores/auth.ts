@@ -5,7 +5,7 @@ import { doc, onSnapshot, DocumentSnapshot } from 'firebase/firestore'
 import { db } from '@/firestore'
 import type { Session } from 'firestore-types'
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_BASE
+const BACKEND_URL = import.meta.env.VITE_BACKEND_BASE || ''
 
 export const useAuthStore = defineStore({
   id: 'auth',

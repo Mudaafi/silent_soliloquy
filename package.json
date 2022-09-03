@@ -7,7 +7,7 @@
     "build": "run-p type-check build-only build-fn",
     "serve": "run-p serve-fn dev",
     "serve-fn": "netlify-lambda serve --config ./webpack.functions.js functions",
-    "build-fn": "netlify-lambda build functions",
+    "build-fn": "netlify-lambda build --config ./webpack.functions.js functions",
     "type-check": "vue-tsc --noEmit",
     "build-only": "vite build",
     "dev": "vite"
