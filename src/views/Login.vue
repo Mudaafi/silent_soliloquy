@@ -10,6 +10,10 @@ function uponVerificationCallback() {
   if (authStore.isAuth == true) router.push({ name: 'dashboard' })
 }
 
+function resetAuth() {
+  authStore.$reset
+}
+
 onMounted(async () => {
   await authStore.createSeshId()
   await authStore.awaitVerification(uponVerificationCallback)
@@ -46,7 +50,7 @@ onMounted(async () => {
     <div class="instructions">
       <h2>Does the above code match the one on Telegram?</h2>
       <h2>If yes, tap confirm on Telegram</h2>
-      <h2>If not, click <a>Here</a> to restart</h2>
+      <h2>If not, click <a @click="resetAuth">Here</a> to restart</h2>
     </div>
   </div>
 </template>
