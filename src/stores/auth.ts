@@ -11,9 +11,9 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     isAuth: false,
-    teleId: '',
-    seshId: '',
-    seshVerificationKey: '',
+    teleId: '-1',
+    seshId: '-1',
+    seshVerificationKey: '-1',
     isAccessed: false,
     lastCreated: -1,
   }),
@@ -36,7 +36,13 @@ export const useAuthStore = defineStore({
     async awaitVerification(
       callback: (doc: DocumentSnapshot<Session>) => void,
     ) {
-      onSnapshot(doc(db.sessions, this.seshId), (doc) => {
+      onSnapshot(doc(db.sessions, this.seshId), async (doc) => {
+        if (!doc.data()) {
+          await axios.get(
+            `${BACKEND_URL}?fn=create-session&seshId=${this.seshId}&verificationKey=${this.seshVerificationKey}`,
+          )
+          return
+        }
         this.isAuth = doc.data()!.verified
         this.teleId = doc.data()!.teleId.toString()
         this.isAccessed = doc.data()!.accessed

@@ -15,12 +15,9 @@ const serviceAccount: ServiceAccount = {
     'firebase-adminsdk-lznr7@silent-soliloquy.iam.gserviceaccount.com',
 }
 
-admin.initializeApp(
-  {
-    credential: admin.credential.cert(serviceAccount),
-  },
-  uuidv4(),
-)
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+})
 
 const SESSIONS_DB = 'sessions'
 
