@@ -6,6 +6,8 @@ const ADMIN_ID = process.env.ADMIN_ID || ''
 
 export async function handler(event: HandlerEvent, context: HandlerContext) {
   var res = 'Received request'
+  const params = event.queryStringParameters as unknown as RequestQueryParams
+
   if (event.httpMethod == 'POST') {
     let body = null
     let bodyContentType = event.headers['content-type']
@@ -14,9 +16,8 @@ export async function handler(event: HandlerEvent, context: HandlerContext) {
       body = JSON.parse(event.body)
     else if (bodyContentType == 'application/x-www-form-urlencoded')
       body = paramsToObject(new URLSearchParams(event.body))
-    res = await processPostReq(body as PostEndpointBody)
+    res = await processPostReq(params, body as PostEndpointBody)
   } else if (event.httpMethod == 'GET') {
-    const params = event.queryStringParameters as unknown
     res = await processGetReq(params as GetEndpointParams)
   }
   return {
@@ -35,8 +36,11 @@ async function processGetReq(params: GetEndpointParams): Promise<string> {
   }
 }
 
-async function processPostReq(body: PostEndpointBody): Promise<string> {
-  if (!body.function) {
+async function processPostReq(
+  params: RequestQueryParams,
+  body: PostEndpointBody,
+): Promise<string> {
+  if (!params.function) {
     await sendMessage(
       TELE_BOT_KEY,
       ADMIN_ID,
@@ -45,7 +49,7 @@ async function processPostReq(body: PostEndpointBody): Promise<string> {
     return 'External Post Request Detected'
   }
 
-  switch (body.function) {
+  switch (params.function) {
     case 'test':
       return 'success'
     default:
@@ -58,8 +62,11 @@ interface PostEndpointBody {
   data: string
 }
 
-interface GetEndpointParams {
+interface RequestQueryParams {
   function: string
+}
+
+interface GetEndpointParams extends RequestQueryParams {
   data: string
 }
 
