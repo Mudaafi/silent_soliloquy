@@ -345,5 +345,8 @@ export function convertToHTML(
 
 // helper function that prevents html/css/script malice
 export const cleanseString = function (string: string): string {
-  return string.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return string
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 }

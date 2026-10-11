@@ -1,5 +1,5 @@
 import type { HandlerEvent, HandlerContext } from '@netlify/functions'
-import { sendMessage } from './lib/telegram-inteface'
+import { cleanseString, sendMessage } from './lib/telegram-inteface'
 
 const TELE_BOT_KEY = process.env.TELE_BOT_KEY || ''
 const ADMIN_ID = process.env.ADMIN_ID || ''
@@ -44,7 +44,7 @@ async function processPostReq(
     await sendMessage(
       TELE_BOT_KEY,
       ADMIN_ID,
-      `Post Request Defaulted\n\n<b>Body:</b>\n${JSON.stringify(body)}`,
+      `Post Request Defaulted\n\n<b>Body:</b>\n${formatJsonBlock(body)}`,
     )
     return 'External Post Request Detected'
   }
@@ -68,6 +68,17 @@ interface RequestQueryParams {
 
 interface GetEndpointParams extends RequestQueryParams {
   data: string
+}
+
+// Telegram caps messages at 4096 chars after parsing, leave room for the header
+const MAX_JSON_LENGTH = 4000
+
+function formatJsonBlock(data: any) {
+  let json = JSON.stringify(data, null, 2)
+  // Truncate before escaping so an HTML entity is never cut in half
+  if (json.length > MAX_JSON_LENGTH)
+    json = json.slice(0, MAX_JSON_LENGTH) + '\n... (truncated)'
+  return `<pre><code class="language-json">${cleanseString(json)}</code></pre>`
 }
 
 function paramsToObject(params: URLSearchParams) {
