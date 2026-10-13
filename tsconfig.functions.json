@@ -1,0 +1,10 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.node.json",
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.functions.tsbuildinfo",
+    "lib": ["esnext"],
+    "types": ["node"]
+  },
+  "include": ["firestore-types.ts", "functions/**/*.ts"]
+}

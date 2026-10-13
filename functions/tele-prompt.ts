@@ -1,16 +1,14 @@
-import type { TeleUpdate } from './lib/tele-types'
+import type { HandlerEvent, HandlerResponse } from '@netlify/functions'
+import type { TeleUpdate } from './lib/telegram'
 import {
   processTeleCallback,
   processTeleError,
   processTeleMsg,
 } from './lib/telegram-extension'
 
-export async function handler(
-  event: { httpMethod: string; body: string },
-  context: any,
-) {
+export async function handler(event: HandlerEvent): Promise<HandlerResponse> {
   if (event.httpMethod == 'POST') {
-    const prompt = JSON.parse(event.body)
+    const prompt = JSON.parse(event.body ?? 'null')
     await processTelePrompt(prompt)
   }
   return {

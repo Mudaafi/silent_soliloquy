@@ -1,6 +1,7 @@
-import type { HandlerEvent, HandlerContext } from '@netlify/functions'
+import type { HandlerEvent, HandlerResponse } from '@netlify/functions'
 import type { Session } from '../firestore-types'
 import { db } from './lib/firestore-interface'
+import { getFunctionName } from './lib/request'
 
 interface EventQueryStringParameters {
   [name: string]: string | undefined
@@ -14,16 +15,17 @@ class LoginError extends Error {
   }
 }
 
-export async function handler(event: HandlerEvent, context: HandlerContext) {
-  var res = null
+export async function handler(event: HandlerEvent): Promise<HandlerResponse> {
+  let res = null
   try {
     if (event.httpMethod == 'POST' && event.body) {
       const body = JSON.parse(event.body)
       res = await processPostReq(body)
     } else if (event.httpMethod == 'GET' && event.queryStringParameters) {
-      const queryStrParams = event.queryStringParameters
-      if (!queryStrParams['fn']) return
-      res = await processGetReq(queryStrParams)
+      res = await processGetReq(
+        getFunctionName(event),
+        event.queryStringParameters,
+      )
     }
     return {
       statusCode: 200,
@@ -43,15 +45,19 @@ export async function handler(event: HandlerEvent, context: HandlerContext) {
   }
 }
 
-async function processPostReq(body: any) {}
+async function processPostReq(body: any) {
+  // Not yet implemented
+}
 
-async function processGetReq(queryStrParams: EventQueryStringParameters) {
-  const fn = queryStrParams['fn']
+async function processGetReq(
+  fn: string | undefined,
+  queryStrParams: EventQueryStringParameters,
+) {
+  const seshId = queryStrParams['seshId']
   switch (fn) {
-    case 'create-session':
-      var seshId = queryStrParams['seshId']
-      var verificationKey = queryStrParams['verificationKey']
-      let newSesh: Session = {
+    case 'create-session': {
+      const verificationKey = queryStrParams['verificationKey']
+      const newSesh: Session = {
         seshId: seshId!,
         verificationKey: verificationKey!,
         teleId: -1,
@@ -60,23 +66,24 @@ async function processGetReq(queryStrParams: EventQueryStringParameters) {
       }
       await db.sessions.doc(seshId!).create(newSesh)
       return 'Session Successfully Created'
+    }
 
     case 'mark-access':
-      var seshId = queryStrParams['seshId']
       await db.sessions.doc(seshId!).update({ accessed: true })
       return
 
-    case 'login-check':
-      var seshId = queryStrParams['seshId']
-      var doc = await db.sessions.doc(seshId!).get()
+    case 'login-check': {
+      const doc = await db.sessions.doc(seshId!).get()
       console.log(JSON.stringify(doc.data()))
       return doc.data()!.verified.toString()
+    }
 
-    case 'test':
-      var doc = await db.sessions.doc('123').get()
+    case 'test': {
+      const doc = await db.sessions.doc('123').get()
       console.log(doc.updateTime!.toDate())
       console.log(Date.now())
       return
+    }
     default:
       throw new LoginError(400, 'Unrecognized Get Request')
   }

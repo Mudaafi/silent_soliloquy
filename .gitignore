@@ -1,6 +1,7 @@
 node_modules
 .env
 lambda
+.netlify
 dist
 .vscode/*
 !.vscode/extensions.json

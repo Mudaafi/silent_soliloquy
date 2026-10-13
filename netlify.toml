@@ -1,7 +1,10 @@
 [build]
   build = "npm run build"
-  functions = "lambda" #  netlify-lambda reads this
+  functions = "functions"
   publish = "dist"
+
+[functions]
+  node_bundler = "esbuild"
 
 [[redirects]]
   from = "/"

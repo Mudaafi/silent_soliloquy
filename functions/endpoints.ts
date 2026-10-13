@@ -1,16 +1,17 @@
-import type { HandlerEvent, HandlerContext } from '@netlify/functions'
-import { cleanseString, sendMessage } from './lib/telegram-inteface'
+import type { HandlerEvent, HandlerResponse } from '@netlify/functions'
+import { getFunctionName } from './lib/request'
+import { ADMIN_ID, cleanseString, tele } from './lib/telegram'
 
-const TELE_BOT_KEY = process.env.TELE_BOT_KEY || ''
-const ADMIN_ID = process.env.ADMIN_ID || ''
-
-export async function handler(event: HandlerEvent, context: HandlerContext) {
-  var res = 'Received request'
-  const params = event.queryStringParameters as unknown as RequestQueryParams
+export async function handler(event: HandlerEvent): Promise<HandlerResponse> {
+  let res = 'Received request'
+  const params = {
+    ...event.queryStringParameters,
+    function: getFunctionName(event),
+  } as RequestQueryParams
 
   if (event.httpMethod == 'POST') {
     let body = null
-    let bodyContentType = event.headers['content-type']
+    const bodyContentType = event.headers['content-type']
     if (event.body == null) body = { function: 'Error' }
     else if (bodyContentType == 'application/json')
       body = JSON.parse(event.body)
@@ -29,7 +30,7 @@ export async function handler(event: HandlerEvent, context: HandlerContext) {
 async function processGetReq(params: GetEndpointParams): Promise<string> {
   switch (params.function) {
     case 'test':
-      await sendMessage(TELE_BOT_KEY, ADMIN_ID, params.data)
+      await tele.sendMessage(ADMIN_ID, params.data)
       return 'success'
     default:
       return 'Get Request Defaulted'
@@ -41,8 +42,7 @@ async function processPostReq(
   body: PostEndpointBody,
 ): Promise<string> {
   if (!params.function) {
-    await sendMessage(
-      TELE_BOT_KEY,
+    await tele.sendMessage(
       ADMIN_ID,
       `Post Request Defaulted\n\n<b>Body:</b>\n${formatJsonBlock(body)}`,
     )
@@ -63,7 +63,7 @@ interface PostEndpointBody {
 }
 
 interface RequestQueryParams {
-  function: string
+  function?: string
 }
 
 interface GetEndpointParams extends RequestQueryParams {
@@ -82,7 +82,7 @@ function formatJsonBlock(data: any) {
 }
 
 function paramsToObject(params: URLSearchParams) {
-  let jsonObj: { [key: string]: any } = {}
+  const jsonObj: { [key: string]: any } = {}
   Array.from(params.keys()).forEach((key) => (jsonObj[key] = params.get(key)))
   return jsonObj
 }

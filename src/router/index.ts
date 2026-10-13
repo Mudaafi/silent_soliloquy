@@ -26,8 +26,8 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('@/views/Login.vue'),
-      beforeEnter: (to, from) => {
-        let authStore = useAuthStore()
+      beforeEnter: () => {
+        const authStore = useAuthStore()
         if (authStore.isAuth) return { name: 'dashboard' }
         else return true
       },
@@ -39,8 +39,8 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('@/views/Dashboard.vue'),
-      beforeEnter: (to, from) => {
-        let authStore = useAuthStore()
+      beforeEnter: () => {
+        const authStore = useAuthStore()
         if (!authStore.isAuth) return { name: 'login' }
         else return true
       },

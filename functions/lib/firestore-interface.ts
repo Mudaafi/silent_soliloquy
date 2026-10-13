@@ -1,7 +1,6 @@
 import admin from 'firebase-admin'
 import type { ServiceAccount } from 'firebase-admin'
 import type { Session } from '../../firestore-types'
-import { uuidv4 } from '@firebase/util'
 import type { DocumentData } from '@firebase/firestore'
 
 const serviceAccount: ServiceAccount = {
