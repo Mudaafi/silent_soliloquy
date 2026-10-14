@@ -7,3 +7,6 @@ dist
 !.vscode/extensions.json
 .vscode
 silent-soliloquy-firebase-adminsdk-*
+
+.claude/
+scripts/

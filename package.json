@@ -15,7 +15,6 @@
     "dev": "vite",
     "netlify:login": "npx --yes netlify-cli@27 login",
     "netlify:logout": "npx --yes netlify-cli@27 logout"
-
   },
   "dependencies": {
     "@netlify/functions": "^1.0.0",
@@ -26,7 +25,7 @@
     "googleapis": "^73.0.0",
     "pinia": "^2.0.17",
     "pinia-plugin-persistedstate": "^2.1.1",
-    "telegram-interface": "^0.1.9",
+    "telegram-interface": "^0.2.0",
     "uuid": "^8.3.2",
     "vue": "^3.2.37",
     "vue-router": "^4.1.5"

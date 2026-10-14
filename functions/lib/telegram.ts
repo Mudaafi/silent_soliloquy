@@ -1,12 +1,6 @@
 import axios from 'axios'
 import { Telegram } from 'telegram-interface'
 
-// telegram-interface@0.1.9 only exports the API calls from its entry point, so
-// formatters and types are imported by path here and nowhere else
-export {
-  cleanseString,
-  convertToHTML,
-} from 'telegram-interface/lib/telegram-formatters'
 export type {
   TeleBotCommand,
   TeleBotCommandScope,
@@ -16,14 +10,16 @@ export type {
   TeleMessage,
   TeleMessageEntities,
   TeleUpdate,
-} from 'telegram-interface/lib/@types/telegram-types'
+  cleanseString,
+  convertToHTML,
+} from 'telegram-interface'
 
 export const ADMIN_ID = process.env.ADMIN_ID || ''
 
 export const tele = new Telegram(process.env.TELE_BOT_KEY || '')
 
-// Bot API methods that telegram-interface does not wrap (as of 0.1.9).
-// Rejects with Telegram's description only, since the request URL holds the key
+// Bot API methods that telegram-interface does not wrap (as of 0.2.0:
+// getMyCommands, deleteMyCommands, getWebhookInfo, setWebhook).
 export async function callBotApi<T>(
   method: string,
   payload: Record<string, unknown>,

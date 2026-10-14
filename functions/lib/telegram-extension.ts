@@ -16,9 +16,6 @@ export async function processTeleMsg(message: TeleMessage) {
     return processPhoto(message)
   } else if (isCommand(message)) {
     return runCommand(message)
-  } else if (message.text) {
-    // Echo
-    return tele.sendMessage(message.from.id, JSON.stringify(message))
   }
 }
 

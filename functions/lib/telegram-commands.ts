@@ -1,5 +1,6 @@
 import { tele } from './telegram'
 import type { TeleIdType, TeleMessage } from './telegram'
+import { runFindFlow } from './flows/find-flow'
 import { runStart } from './flows/start-flow'
 
 // Required values
@@ -11,7 +12,7 @@ export interface TeleMessageCommand extends TeleMessageFromUser {
   text: string
 }
 
-const COMMANDS = ['/identify', '/start']
+const COMMANDS = ['/identify', '/start', '/find']
 
 export function isCommand(msg: TeleMessage): msg is TeleMessageCommand {
   if (!msg.text || msg.from == null) return false
@@ -27,6 +28,10 @@ export async function runCommand(msg: TeleMessageCommand) {
 
     case '/start':
       return _runStart(msg.text, msg.from.id)
+
+    case '/find':
+      // This will be completed by an external server
+      return _runFind(msg.text, msg.chat.id)
   }
 }
 
@@ -38,6 +43,11 @@ async function _runIdentify(userId: TeleIdType, chatId: TeleIdType) {
 async function _runStart(input: string, userId: TeleIdType) {
   const [, trailing] = _extractArguments(input)
   return runStart(userId, trailing as string)
+}
+
+async function _runFind(input: string, chatId: TeleIdType) {
+  const [, trailing] = _extractArguments(input)
+  return runFindFlow(chatId, trailing)
 }
 
 // ---- Utilities
