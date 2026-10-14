@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Telegram } from 'telegram-interface'
 
+export { cleanseString, convertToHTML } from 'telegram-interface'
 export type {
   TeleBotCommand,
   TeleBotCommandScope,
@@ -10,8 +11,6 @@ export type {
   TeleMessage,
   TeleMessageEntities,
   TeleUpdate,
-  cleanseString,
-  convertToHTML,
 } from 'telegram-interface'
 
 export const ADMIN_ID = process.env.ADMIN_ID || ''
@@ -20,6 +19,7 @@ export const tele = new Telegram(process.env.TELE_BOT_KEY || '')
 
 // Bot API methods that telegram-interface does not wrap (as of 0.2.0:
 // getMyCommands, deleteMyCommands, getWebhookInfo, setWebhook).
+// Rejects with Telegram's description only, since the request URL holds the key
 export async function callBotApi<T>(
   method: string,
   payload: Record<string, unknown>,
