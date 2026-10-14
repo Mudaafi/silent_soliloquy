@@ -12,7 +12,10 @@
     "type-check:fn": "tsc --noEmit -p tsconfig.functions.json",
     "lint": "eslint --ext .ts,.js,.vue .",
     "build-only": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "netlify:login": "npx --yes netlify-cli@27 login",
+    "netlify:logout": "npx --yes netlify-cli@27 logout"
+
   },
   "dependencies": {
     "@netlify/functions": "^1.0.0",

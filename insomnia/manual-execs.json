@@ -1,0 +1,695 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-14T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v10.3.0",
+  "resources": [
+    {
+      "_id": "wrk_manual_execs",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "silent_soliloquy manual-execs",
+      "description": "Requests for the manual-execs Netlify function. Pick the Local or Production environment and fill in manual_execs_token first.",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_manual_execs_base",
+      "_type": "environment",
+      "parentId": "wrk_manual_execs",
+      "name": "Base Environment",
+      "data": {
+        "function_url": "{{ _.base_url }}/.netlify/functions/manual-execs"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "function_url"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1
+    },
+    {
+      "_id": "env_manual_execs_local",
+      "_type": "environment",
+      "parentId": "env_manual_execs_base",
+      "name": "Local (npm run serve-fn)",
+      "data": {
+        "base_url": "http://localhost:9000",
+        "manual_execs_token": "PASTE_MANUAL_EXECS_TOKEN_HERE"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "manual_execs_token"
+        ]
+      },
+      "color": "#7d69cb",
+      "isPrivate": true,
+      "metaSortKey": 2
+    },
+    {
+      "_id": "env_manual_execs_prod",
+      "_type": "environment",
+      "parentId": "env_manual_execs_base",
+      "name": "Production",
+      "data": {
+        "base_url": "https://YOUR-SITE.netlify.app",
+        "manual_execs_token": "PASTE_MANUAL_EXECS_TOKEN_HERE"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "manual_execs_token"
+        ]
+      },
+      "color": "#d04444",
+      "isPrivate": true,
+      "metaSortKey": 3
+    },
+    {
+      "_id": "fld_me_root",
+      "_type": "request_group",
+      "parentId": "wrk_manual_execs",
+      "name": "Manual Execs",
+      "description": "Requests for the manual-execs Netlify function. Bearer auth is set here; requests inherit it unless they say otherwise.",
+      "environment": {},
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.manual_execs_token }}",
+        "prefix": "",
+        "disabled": false
+      },
+      "metaSortKey": 1
+    },
+    {
+      "_id": "fld_me_read",
+      "_type": "request_group",
+      "parentId": "fld_me_root",
+      "name": "1. Read (safe)",
+      "description": "Read-only. Nothing on the bot changes.",
+      "environment": {},
+      "metaSortKey": 1,
+      "authentication": {}
+    },
+    {
+      "_id": "req_manual_execs_01",
+      "_type": "request",
+      "parentId": "fld_me_read",
+      "name": "getCommands - every scope",
+      "description": "Returns the registered menu for default, all_private_chats, all_group_chats, all_chat_administrators and adminChat.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "getCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "authentication": {},
+      "metaSortKey": 1,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_02",
+      "_type": "request",
+      "parentId": "fld_me_read",
+      "name": "getCommands - default scope",
+      "description": "One scope, given as a Telegram scope object.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "getCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": {\n    \"type\": \"default\"\n  }\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 2,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_03",
+      "_type": "request",
+      "parentId": "fld_me_read",
+      "name": "getCommands - adminChat",
+      "description": "One scope, given by name. adminChat is the chat in ADMIN_ID.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "getCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": \"adminChat\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 3,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_05",
+      "_type": "request",
+      "parentId": "fld_me_read",
+      "name": "getCommands - function in body (legacy)",
+      "description": "Same as the first request, but names the operation in the body instead of the query string.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"function\": \"getCommands\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_06",
+      "_type": "request",
+      "parentId": "fld_me_read",
+      "name": "unknown function",
+      "description": "Expect 200 'done': authorized, but no such operation.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "nope"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "authentication": {},
+      "metaSortKey": 6,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_me_auth",
+      "_type": "request_group",
+      "parentId": "fld_me_root",
+      "name": "2. Auth checks (safe)",
+      "description": "Each of these should be rejected with 401 Unauthorized before anything runs.",
+      "environment": {},
+      "metaSortKey": 2,
+      "authentication": {}
+    },
+    {
+      "_id": "req_manual_execs_07",
+      "_type": "request",
+      "parentId": "fld_me_auth",
+      "name": "no token -> 401",
+      "description": "No Authorization header.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "getCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "authentication": {
+        "type": "none"
+      },
+      "metaSortKey": 7,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_08",
+      "_type": "request",
+      "parentId": "fld_me_auth",
+      "name": "wrong token -> 401",
+      "description": "A bearer token that is not MANUAL_EXECS_TOKEN.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "getCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "not-the-token"
+      },
+      "metaSortKey": 8,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_09",
+      "_type": "request",
+      "parentId": "fld_me_auth",
+      "name": "GET with no token -> 401",
+      "description": "Every method is checked, not only POST.",
+      "method": "GET",
+      "url": "{{ _.function_url }}",
+      "parameters": [],
+      "headers": [],
+      "body": {},
+      "authentication": {
+        "type": "none"
+      },
+      "metaSortKey": 9,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_10",
+      "_type": "request",
+      "parentId": "fld_me_auth",
+      "name": "deleteCommands with no token -> 401",
+      "description": "Confirms a destructive operation is refused without the token. Nothing is deleted.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "deleteCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": {\n    \"type\": \"default\"\n  }\n}"
+      },
+      "authentication": {
+        "type": "none"
+      },
+      "metaSortKey": 10,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_me_write",
+      "_type": "request_group",
+      "parentId": "fld_me_root",
+      "name": "3. Write (changes the bot)",
+      "description": "These change what users see in the bot's command menu. setCommands replaces the whole list for the scope.",
+      "environment": {},
+      "metaSortKey": 3,
+      "authentication": {}
+    },
+    {
+      "_id": "req_manual_execs_11",
+      "_type": "request",
+      "parentId": "fld_me_write",
+      "name": "setCommands - adminChat: identify",
+      "description": "Sets the admin chat's menu to exactly this list. Expect 'Commands Set'.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "setCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": \"adminChat\",\n  \"commands\": [\n    {\n      \"command\": \"identify\",\n      \"description\": \"Show this chat's ID\"\n    }\n  ]\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 11,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_12",
+      "_type": "request",
+      "parentId": "fld_me_write",
+      "name": "setCommands - default: identify",
+      "description": "Sets the menu everyone sees to exactly this list, replacing whatever is there.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "setCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": {\n    \"type\": \"default\"\n  },\n  \"commands\": [\n    {\n      \"command\": \"identify\",\n      \"description\": \"Show this chat's ID\"\n    }\n  ]\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 12,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_13",
+      "_type": "request",
+      "parentId": "fld_me_write",
+      "name": "setCommands - specific chat",
+      "description": "Scope object with a chat_id. Replace the id before sending.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "setCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": {\n    \"type\": \"chat\",\n    \"chat_id\": \"REPLACE_WITH_CHAT_ID\"\n  },\n  \"commands\": [\n    {\n      \"command\": \"identify\",\n      \"description\": \"Show this chat's ID\"\n    }\n  ]\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 13,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_14",
+      "_type": "request",
+      "parentId": "fld_me_write",
+      "name": "deleteCommands - adminChat",
+      "description": "Removes the admin chat's own menu, so it falls back to the default one. Expect 'Commands Deleted'.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "deleteCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": \"adminChat\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 14,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_15",
+      "_type": "request",
+      "parentId": "fld_me_write",
+      "name": "deleteCommands - default",
+      "description": "Removes the menu everyone sees.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "deleteCommands"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"scope\": {\n    \"type\": \"default\"\n  }\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 15,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_me_other",
+      "_type": "request_group",
+      "parentId": "fld_me_root",
+      "name": "4. Other",
+      "description": "",
+      "environment": {},
+      "metaSortKey": 4,
+      "authentication": {}
+    },
+    {
+      "_id": "req_manual_execs_17",
+      "_type": "request",
+      "parentId": "fld_me_other",
+      "name": "test - send photo to admin",
+      "description": "Sends the photo with this file_id to the admin chat. Get a file_id by sending the bot a photo.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "test"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"payload\": \"REPLACE_WITH_PHOTO_FILE_ID\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 17,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_18",
+      "_type": "request",
+      "parentId": "fld_me_read",
+      "name": "getWebhook",
+      "description": "Returns Telegram's webhook info for the bot: the URL updates are sent to, pending count and last error. Does not reveal the secret.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "getWebhook"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "authentication": {},
+      "metaSortKey": 6.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_19",
+      "_type": "request",
+      "parentId": "fld_me_write",
+      "name": "setWebhook - register with secret",
+      "description": "Registers this URL as the bot's webhook, signed with the server's TELE_WEBHOOK_SECRET. Run it against the environment whose TELE_WEBHOOK_SECRET matches the one the deployed tele-prompt checks. Expect 'Webhook Set'.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "setWebhook"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"url\": \"https://silent-soliloquy.netlify.app/.netlify/functions/tele-prompt\"\n}"
+      },
+      "authentication": {},
+      "metaSortKey": 16.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    }
+  ]
+}

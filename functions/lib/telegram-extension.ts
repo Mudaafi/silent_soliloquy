@@ -5,41 +5,39 @@ import type {
   TeleMessageEntities,
   TeleUpdate,
 } from './telegram'
-import { db } from './firestore-interface'
+import { runCallbackFlow } from './telegram-callbacks'
+import { isCommand, runCommand } from './telegram-commands'
+import type { TeleMessageFromUser } from './telegram-commands'
 
 export async function processTeleMsg(message: TeleMessage) {
+  if (!isAdmin(message)) return rejectNonAdmin(message)
+
   if (message.photo) {
     return processPhoto(message)
+  } else if (isCommand(message)) {
+    return runCommand(message)
   } else if (message.text) {
-    if (!message.from) return
-    await tele.sendMessage(message.from.id, JSON.stringify(message))
-    if (message.from.id.toString() != ADMIN_ID)
-      return tele.sendMessage(
-        message.from.id,
-        'Sorry but I am not authorized to converse with you.',
-      )
-    if (message.text.includes('/start')) {
-      const seshId = message.text.split(' ')[1]
-      await db.sessions.doc(seshId).update({
-        accessed: true,
-      })
-      const sesh = (await db.sessions.doc(seshId).get()).data()
-      const msg = `Before you login, please confirm if the code on your screen is the same as <b>${
-        sesh!.verificationKey
-      }</b>`
-      const btns = tele.genInlineButtons([['Log Me In!']], [seshId])
-      return tele.sendMessage(message.from.id, msg, btns)
-    }
-    if (message.text == '/identify')
-      return tele.sendMessage(message.from.id, `Chat ID: ${message.chat.id}`)
+    // Echo
+    return tele.sendMessage(message.from.id, JSON.stringify(message))
   }
 }
 
 export async function processTeleCallback(callback: TeleCallbackQuery) {
-  const seshId = callback.data
-  if (!seshId) return
-  await db.sessions.doc(seshId).update({ verified: true })
-  return tele.sendMessage(callback.from.id, 'Logged in!')
+  if (callback.from.id.toString() != ADMIN_ID) return
+
+  return runCallbackFlow(callback)
+}
+
+function isAdmin(msg: TeleMessage): msg is TeleMessageFromUser {
+  return msg.from != null && msg.from.id.toString() == ADMIN_ID
+}
+
+async function rejectNonAdmin(msg: TeleMessage) {
+  if (!msg.text || !msg.from) return
+  return tele.sendMessage(
+    msg.from.id,
+    'Sorry but I am not authorized to converse with you.',
+  )
 }
 
 export async function processTeleError(prompt: TeleUpdate, errorMsg: Error) {
