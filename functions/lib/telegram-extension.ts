@@ -16,6 +16,24 @@ export async function processTeleMsg(message: TeleMessage) {
     return processPhoto(message)
   } else if (isCommand(message)) {
     return runCommand(message)
+  } else if (hasLink(message)) {
+    return acknowledgeLink(message)
+  }
+}
+
+function hasLink(msg: TeleMessage) {
+  return (msg.entities || []).some(
+    (e) => e.type == 'url' || e.type == 'text_link',
+  )
+}
+
+async function acknowledgeLink(msg: TeleMessage) {
+  try {
+    await tele.setMessageReaction(msg.chat.id, msg.message_id, [
+      { type: 'emoji', emoji: '👀' },
+    ])
+  } catch (e) {
+    console.log(e)
   }
 }
 
