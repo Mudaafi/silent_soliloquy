@@ -10,6 +10,7 @@ export async function handler(event: HandlerEvent): Promise<HandlerResponse> {
   } as RequestQueryParams
 
   if (event.httpMethod == 'POST') {
+    const headers = event.headers
     let body = null
     const bodyContentType = event.headers['content-type']
     if (event.body == null) body = { function: 'Error' }
@@ -17,7 +18,7 @@ export async function handler(event: HandlerEvent): Promise<HandlerResponse> {
       body = JSON.parse(event.body)
     else if (bodyContentType == 'application/x-www-form-urlencoded')
       body = paramsToObject(new URLSearchParams(event.body))
-    res = await processPostReq(params, body as PostEndpointBody)
+    res = await processPostReq(params, body as PostEndpointBody, headers)
   } else if (event.httpMethod == 'GET') {
     res = await processGetReq(params as GetEndpointParams)
   }
@@ -40,11 +41,14 @@ async function processGetReq(params: GetEndpointParams): Promise<string> {
 async function processPostReq(
   params: RequestQueryParams,
   body: PostEndpointBody,
+  headers?: any,
 ): Promise<string> {
   if (!params.function) {
     await tele.sendMessage(
       ADMIN_ID,
-      `Post Request Defaulted\n\n<b>Body:</b>\n${formatJsonBlock(body)}`,
+      `Post Request Defaulted\n\n<b>Body:</b>\n${formatJsonBlock(
+        body,
+      )}\n\n<b>Headers</b>${formatJsonBlock(headers)}`,
     )
     return 'External Post Request Detected'
   }
