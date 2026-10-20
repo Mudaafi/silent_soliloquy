@@ -17,7 +17,7 @@ export async function processTeleMsg(message: TeleMessage) {
   } else if (isCommand(message)) {
     return runCommand(message)
   } else if (hasLink(message)) {
-    return acknowledgeLink(message)
+    return acknowledge(message)
   }
 }
 
@@ -27,7 +27,9 @@ function hasLink(msg: TeleMessage) {
   )
 }
 
-async function acknowledgeLink(msg: TeleMessage) {
+// Shows that a message was received with a 👀 reaction. Best effort: the
+// reaction is a courtesy, so a failure is only logged
+export async function acknowledge(msg: TeleMessage) {
   try {
     await tele.setMessageReaction(msg.chat.id, msg.message_id, [
       { type: 'emoji', emoji: '👀' },

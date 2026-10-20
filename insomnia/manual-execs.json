@@ -690,6 +690,40 @@
       "settingEncodeUrl": true,
       "settingRebuildPath": true,
       "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_manual_execs_20",
+      "_type": "request",
+      "parentId": "fld_me_write",
+      "name": "wikiReflect",
+      "description": "Posts the LLM wiki's reflect trigger line into the admin chat. The wiki listener runs a reflect only if it is running when the line arrives and 50 or more links were filed since the last reflect; it deletes the line either way.",
+      "method": "POST",
+      "url": "{{ _.function_url }}",
+      "parameters": [
+        {
+          "name": "function",
+          "value": "wikiReflect"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{}"
+      },
+      "authentication": {},
+      "metaSortKey": 17.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
     }
   ]
 }

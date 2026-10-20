@@ -1,0 +1,28 @@
+name: Wiki reflect
+
+# Asks manual-execs to post the reflect trigger. The listener on the admin's
+# Mac runs the review if it is up and enough links came in (see LLM_WIKI.md)
+on:
+  schedule:
+    - cron: '17 19 * * 6' # Sunday 03:17 SGT; GitHub runs cron in UTC
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Post the reflect trigger
+        env:
+          SITE_URL: https://silent-soliloquy.netlify.app
+          MANUAL_EXECS_TOKEN: ${{ secrets.MANUAL_EXECS_TOKEN }}
+        run: |
+          : "${MANUAL_EXECS_TOKEN:?MANUAL_EXECS_TOKEN secret is not set}"
+          body=$(curl -sS --fail-with-body -X POST \
+            -H "Authorization: Bearer $MANUAL_EXECS_TOKEN" \
+            "${SITE_URL%/}/.netlify/functions/manual-execs?function=wikiReflect")
+          echo "$body"
+          # A deploy without wikiReflect still answers 200 "done"
+          [ "$body" = "Trigger sent" ]

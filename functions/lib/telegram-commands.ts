@@ -2,6 +2,7 @@ import { tele } from './telegram'
 import type { TeleIdType, TeleMessage } from './telegram'
 import { runFindFlow } from './flows/find-flow'
 import { runStart } from './flows/start-flow'
+import { runWikiReflectFlow } from './flows/wiki-reflect-flow'
 
 // Required values
 export interface TeleMessageFromUser extends TeleMessage {
@@ -12,7 +13,7 @@ export interface TeleMessageCommand extends TeleMessageFromUser {
   text: string
 }
 
-const COMMANDS = ['/identify', '/start', '/find']
+const COMMANDS = ['/identify', '/start', '/find', '/wiki_reflect']
 
 export function isCommand(msg: TeleMessage): msg is TeleMessageCommand {
   if (!msg.text || msg.from == null) return false
@@ -32,6 +33,10 @@ export async function runCommand(msg: TeleMessageCommand) {
     case '/find':
       // This will be completed by an external server
       return _runFind(msg.text, msg.chat.id)
+
+    case '/wiki_reflect':
+      // Also completed by an external server
+      return _runWikiReflect(msg)
   }
 }
 
@@ -48,6 +53,10 @@ async function _runStart(input: string, userId: TeleIdType) {
 async function _runFind(input: string, chatId: TeleIdType) {
   const [, trailing] = _extractArguments(input)
   return runFindFlow(chatId, trailing)
+}
+
+async function _runWikiReflect(msg: TeleMessage) {
+  return runWikiReflectFlow(msg)
 }
 
 // ---- Utilities

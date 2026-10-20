@@ -79,6 +79,12 @@ async function processPostReq(fn: string | undefined, body: any) {
       })
       return 'Webhook Set'
     }
+    case 'wikiReflect': {
+      // The weekly reflect check of the LLM wiki (librarian). Runs
+      // on a separate machine
+      await tele.sendMessage(ADMIN_ID, WIKI_REFLECT_TRIGGER)
+      return 'Trigger sent'
+    }
     case 'test': {
       const photoId = body.payload
       console.log(photoId)
@@ -88,6 +94,8 @@ async function processPostReq(fn: string | undefined, body: any) {
     default:
   }
 }
+
+const WIKI_REFLECT_TRIGGER = '🪞 Wiki reflect check'
 
 // Scopes that can be given by name, so that callers do not need to know the
 // chat ids
